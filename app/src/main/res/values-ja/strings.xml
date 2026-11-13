@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="tile_label_exited">Xray 終了</string>
+    <string name="tile_label_normal">プロキシ</string>
     <string name="xray_state_on">オン</string>
     <string name="xray_state_off">オフ</string>
     <string name="state_exited">終了</string>

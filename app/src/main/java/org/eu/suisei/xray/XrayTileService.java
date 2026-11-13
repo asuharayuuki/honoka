@@ -128,34 +128,30 @@ public class XrayTileService extends TileService {
                 return;
             }
 
+            tile.setLabel(getString(R.string.tile_label_normal));
             if (result.result == RootShell.ActionResult.ERROR && result.state != RootShell.State.ON) {
-                tile.setLabel(getString(R.string.tile_label_normal));
                 tile.setSubtitle(getString(R.string.state_error));
                 tile.setState(Tile.STATE_INACTIVE);
                 tile.setStateDescription(getString(R.string.state_error));
             } else {
                 switch (result.state) {
                     case ON:
-                        tile.setLabel(getString(R.string.tile_label_normal));
                         tile.setSubtitle(getString(R.string.xray_state_on));
                         tile.setState(Tile.STATE_ACTIVE);
                         tile.setStateDescription(getString(R.string.xray_state_on));
                         break;
                     case EXITED:
-                        tile.setLabel(getString(R.string.tile_label_exited));
                         tile.setSubtitle(getString(R.string.state_exited));
                         tile.setState(Tile.STATE_INACTIVE);
                         tile.setStateDescription(getString(R.string.state_exited));
                         break;
                     case OFF:
-                        tile.setLabel(getString(R.string.tile_label_normal));
                         tile.setSubtitle(getString(R.string.xray_state_off));
                         tile.setState(Tile.STATE_INACTIVE);
                         tile.setStateDescription(getString(R.string.xray_state_off));
                         break;
                     case ERROR:
                     default:
-                        tile.setLabel(getString(R.string.tile_label_normal));
                         tile.setSubtitle(getString(R.string.state_error));
                         tile.setState(Tile.STATE_INACTIVE);
                         tile.setStateDescription(getString(R.string.state_error));

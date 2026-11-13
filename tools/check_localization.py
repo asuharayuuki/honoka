@@ -57,8 +57,7 @@ class LocalizationTests(unittest.TestCase):
 
     def test_product_names_use_shared_resources(self):
         default = strings("values")
-        for key, value in (("app_name", "honoka"), ("tile_label_normal", "Xray"),
-                           ("caffeine_tile_label", "Caffeine")):
+        for key, value in (("app_name", "honoka"), ("caffeine_tile_label", "Caffeine")):
             self.assertEqual(default[key].text, value)
             self.assertEqual(default[key].get("translatable"), "false")
 

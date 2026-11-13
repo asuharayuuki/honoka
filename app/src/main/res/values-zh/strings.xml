@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="tile_label_exited">Xray 已退出</string>
+    <string name="tile_label_normal">代理</string>
     <string name="xray_state_on">已开启</string>
     <string name="xray_state_off">已关闭</string>
     <string name="state_exited">已退出</string>

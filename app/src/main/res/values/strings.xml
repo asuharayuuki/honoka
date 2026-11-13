@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">honoka</string>
-    <string name="tile_label_normal" translatable="false">Xray</string>
-    <string name="tile_label_exited">Xray Exited</string>
+    <string name="tile_label_normal">Proxy</string>
     <string name="xray_state_on">On</string>
     <string name="xray_state_off">Off</string>
     <string name="state_exited">Exited</string>
