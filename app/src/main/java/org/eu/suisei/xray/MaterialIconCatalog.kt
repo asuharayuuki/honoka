@@ -90,21 +90,27 @@ internal object MaterialIconCatalog {
     }
 
     @JvmStatic
-    fun tileIcon(context: Context, id: String): Icon {
+    fun tileIcon(context: Context, id: String): Icon = icon(context, id)
+
+    fun controlsIcon(context: Context, id: String): Icon = icon(context, id, Color.WHITE)
+
+    private fun icon(context: Context, id: String, color: Int? = null): Icon {
         val glyph = glyph(context, id)
-            ?: return Icon.createWithResource(context, IconHelper.getDrawableRes(id))
-        // Send a small monochrome bitmap so System UI can apply its tile tint.
+        if (glyph == null) {
+            val icon = Icon.createWithResource(context, IconHelper.getDrawableRes(id))
+            return if (color == null) icon else icon.setTint(color)
+        }
         val size = (24 * context.resources.displayMetrics.density).roundToInt()
-        return Icon.createWithBitmap(glyph.bitmap(size, size))
+        return Icon.createWithBitmap(glyph.bitmap(size, size, color ?: Color.BLACK))
     }
 }
 
 internal class IconGlyph(private val text: String, private val typeface: Typeface) {
-    fun bitmap(width: Int, height: Int): Bitmap {
+    fun bitmap(width: Int, height: Int, color: Int = Color.BLACK): Bitmap {
         val bitmap = createBitmap(width, height)
         val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             typeface = this@IconGlyph.typeface
-            color = Color.BLACK
+            this.color = color
             textAlign = Paint.Align.CENTER
             textSize = minOf(width, height) * 0.96f
         }

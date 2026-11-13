@@ -112,8 +112,7 @@ class DashboardControlsService : ControlsProviderService() {
 
     private fun entries(): Map<String, Entry> = buildMap {
         for (section in DashboardConfigManager.load(this@DashboardControlsService)) {
-            val structure = section.getDisplayTitle(this@DashboardControlsService)
-            for (item in section.items) put(item.id, Entry(item, structure))
+            for (item in section.items) put(item.id, Entry(item))
         }
     }
 
@@ -121,10 +120,10 @@ class DashboardControlsService : ControlsProviderService() {
         val item = entry.item
         val builder = Control.StatelessBuilder(item.id, appIntent)
             .setTitle(item.getDisplayTitle(this))
-            .setStructure(entry.structure)
+            .setStructure(getString(R.string.app_name))
             .setDeviceType(if (entry.isSwitch) DeviceTypes.TYPE_SWITCH else DeviceTypes.TYPE_ROUTINE)
         if (item.icon.isNotBlank() && !item.icon.equals("none", ignoreCase = true)) {
-            builder.setCustomIcon(MaterialIconCatalog.tileIcon(this, item.icon))
+            builder.setCustomIcon(MaterialIconCatalog.controlsIcon(this, item.icon))
         }
         return builder.build()
     }
@@ -166,7 +165,7 @@ class DashboardControlsService : ControlsProviderService() {
         !item.isCore && item.disableConditionCommand.isNotBlank() &&
             DashboardCommands.check(item.disableConditionCommand) == 0
 
-    private class Entry(val item: DashboardItem, val structure: String) {
+    private class Entry(val item: DashboardItem) {
         val isSwitch = item.isCore || DashboardItem.TYPE_SWITCH.equals(item.type, ignoreCase = true)
     }
 
