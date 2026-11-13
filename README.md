@@ -36,6 +36,7 @@ Validation: `python tools/check_localization.py`, `./gradlew testDebugUnitTest a
 - **Dynamic Command Output Summaries**: Subtitle descriptions dynamically fetch stdout from commands (e.g. status or output). When output is empty or whitespace, description views automatically hide.
 - **Exit Code Disable Conditions**: Automatically disable and dim any button or switch when a specified verification command evaluates to true (exit code 0).
 - **Google icon library**: The dashboard and Record tile share a searchable offline picker with all 4,304 Material Symbols names and the five classic Material Icons catalogs from [Google](https://github.com/google/material-design-icons/tree/10ecc14790612ca8fd164e3f4ffe9c16fc50d5b7). Material Symbols include Outlined, Rounded, and Sharp, each with a filled variant. The honoka built-in collection preserves the original icons and saved IDs.
+- **Android Device Controls**: On Android 11 or newer devices that support Device Controls, open the system Device Controls panel, select honoka, and add dashboard items as favorites. Dashboard sections appear as groups. Buttons run their configured actions, and switches with a state check show the reported state. Unlock the device before using these controls.
 
 ### 3. Dedicated Full-Page Item Editor (`EditItemActivity`)
 - Completely eliminates cramped multi-layer dialogs and box-in-box nesting.

@@ -136,7 +136,7 @@ public final class RootShell {
     /**
      * Executes the click transaction for the TileService.
      */
-    public static Result toggle(Context context) {
+    public static synchronized Result toggle(Context context) {
         String functions = buildScriptFunctions(context);
         String proxy = quote(AppConfig.getHttpProxy(context));
         String procName = quote(AppConfig.getProcessName(context));
@@ -223,7 +223,7 @@ public final class RootShell {
     /**
      * Starts Xray and enables global HTTP proxy.
      */
-    public static DetailedStatus startService(Context context) {
+    public static synchronized DetailedStatus startService(Context context) {
         String script = buildScriptFunctions(context) +
                 "stop_xray\n" +
                 "if start_xray; then\n" +
@@ -240,7 +240,7 @@ public final class RootShell {
     /**
      * Clears HTTP proxy and stops Xray.
      */
-    public static DetailedStatus stopService(Context context) {
+    public static synchronized DetailedStatus stopService(Context context) {
         String script = buildScriptFunctions(context) +
                 "clear_proxy\n" +
                 "if stop_xray; then\n" +
@@ -255,7 +255,7 @@ public final class RootShell {
     /**
      * Restarts Xray and enables global HTTP proxy.
      */
-    public static DetailedStatus restartService(Context context) {
+    public static synchronized DetailedStatus restartService(Context context) {
         String script = buildScriptFunctions(context) +
                 "stop_xray\n" +
                 "if start_xray; then\n" +

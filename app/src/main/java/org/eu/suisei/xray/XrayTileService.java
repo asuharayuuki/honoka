@@ -114,6 +114,7 @@ public class XrayTileService extends TileService {
             } catch (Exception e) {
                 applyTileState(new RootShell.Result(RootShell.ActionResult.ERROR, RootShell.State.ERROR));
             } finally {
+                DashboardControlsService.refresh();
                 busy.set(false);
                 if (forceRefresh.get()) requestRefresh(XrayTileService.this);
             }

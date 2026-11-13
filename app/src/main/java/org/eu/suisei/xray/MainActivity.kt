@@ -134,6 +134,7 @@ class MainActivity : ComponentActivity() {
                     RootShell.stopService(this)
                 }
                 XrayTileService.requestRefresh(this)
+                DashboardControlsService.refresh()
                 runOnUiThread {
                     isBusy.value = false
                     refreshDashboardStates()
@@ -195,20 +196,20 @@ class MainActivity : ComponentActivity() {
                         // Switch state check
                         if (DashboardItem.TYPE_SWITCH.equals(item.type, ignoreCase = true)) {
                             if (!item.stateCheckCommand.isNullOrBlank()) {
-                                val on = executeCheckExitCode(item.stateCheckCommand) == 0
+                                val on = DashboardCommands.check(item.stateCheckCommand) == 0
                                 newSwitches[item.id] = on
                             }
                         }
 
                         // Disable condition check
                         if (!item.disableConditionCommand.isNullOrBlank()) {
-                            val disabled = executeCheckExitCode(item.disableConditionCommand) == 0
+                            val disabled = DashboardCommands.check(item.disableConditionCommand) == 0
                             newDisabled[item.id] = disabled
                         }
 
                         // Dynamic summary command
                         if (!item.summaryCommand.isNullOrBlank()) {
-                            val summary = executeGetOutput(item.summaryCommand)
+                            val summary = DashboardCommands.summary(item.summaryCommand)
                             if (summary.isNotBlank()) {
                                 newSummaries[item.id] = summary
                             }
@@ -239,15 +240,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun executeCheckExitCode(command: String): Int = try {
-        CommandRunner.run(buildShellProcess(command), 3000, 0).exitCode
-    } catch (e: Exception) { -1 }
-
-    private fun executeGetOutput(command: String): String = try {
-        val result = CommandRunner.run(buildShellProcess(command), 3000, 200)
-        if (result.timedOut) "" else result.output.trim().replace('\n', ' ')
-    } catch (e: Exception) { "" }
-
     private fun executeCommandAsync(command: String?, onComplete: (() -> Unit)? = null) {
         if (command.isNullOrBlank()) {
             onComplete?.invoke()
@@ -257,7 +249,7 @@ class MainActivity : ComponentActivity() {
         isBusy.value = true
         thread(name = "CustomAction-Executor") {
             try {
-                val result = CommandRunner.run(buildShellProcess(command), 10000, 2000)
+                val result = DashboardCommands.runAction(command)
                 runOnUiThread {
                     val message = when {
                         result.timedOut -> getString(R.string.msg_command_timeout)
@@ -272,21 +264,11 @@ class MainActivity : ComponentActivity() {
                     Toast.makeText(this, R.string.msg_command_error, Toast.LENGTH_LONG).show()
                 }
             } finally {
+                DashboardControlsService.refresh()
                 runOnUiThread {
                     isBusy.value = false
                     onComplete?.invoke()
                 }
-            }
-        }
-    }
-
-    companion object {
-        private fun buildShellProcess(command: String?): ProcessBuilder {
-            val trimmed = command?.trim() ?: ""
-            return if (trimmed.startsWith("su ") || trimmed == "su") {
-                ProcessBuilder("/system/bin/sh", "-c", trimmed)
-            } else {
-                ProcessBuilder("su", "-c", trimmed)
             }
         }
     }
